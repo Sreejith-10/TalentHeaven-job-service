@@ -26,7 +26,7 @@ service.use("/job", router);
 
 database;
 
-// createConnectionMQ();
+createConnectionMQ();
 
 service.listen(PORT, () => {
 	log(

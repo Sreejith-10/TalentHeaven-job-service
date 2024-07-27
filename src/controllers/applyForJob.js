@@ -1,25 +1,25 @@
 import {sendToQueue} from "../config/amqp.js";
-import {JobModel} from "../models/jobModel.js";
+import {ApplicationModel} from "../models/applicationModel.js";
 
 export const applyForJob = async (req, res) => {
 	try {
-		const {job_id, user_id} = req.body;
+		const {company_id, job_id, user_id} = req.body;
 
-		const job = await JobModel.findByIdAndUpdate(job_id, {
-			$addToSet: {
-				applications: {
-					user_id,
-					applied_on: new Date().getTime(),
+		await ApplicationModel.updateOne(
+			{job_id},
+			{
+				$push: {
+					applications: {
+						user_id,
+					},
 				},
-			},
-		});
-
-		const cmp_id = job.company_id;
+			}
+		);
 
 		sendToQueue("APPLY_JOB", {
 			job_id,
 			user_id,
-			cmp_id,
+			cmp_id: company_id,
 			applied_on: new Date().getTime(),
 		}).then(() => {
 			return res.status(200).json({message: "applied for job"});

@@ -1,10 +1,30 @@
 import mongoose from "mongoose";
 
 const applicationSchema = new mongoose.Schema({
-	copany_id: {
+	company_id: {
 		type: String,
 	},
-	jobs: {
-		job_id,
+	job_id: {
+		type: String,
 	},
+	applications: [
+		{
+			user_id: {
+				type: String,
+			},
+			applied_on: {
+				type: Number,
+				default: Date.now(),
+			},
+			status: {
+				type: String,
+				default: "applied",
+			},
+		},
+	],
 });
+
+export const ApplicationModel = mongoose.model(
+	"applications",
+	applicationSchema
+);

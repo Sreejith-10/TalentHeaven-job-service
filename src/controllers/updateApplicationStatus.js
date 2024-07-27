@@ -1,26 +1,30 @@
 import {sendToQueue} from "../config/amqp.js";
 import {ApplicationModel} from "../models/applicationModel.js";
 
-export const rejectApplication = async (req, res) => {
+export const updateApplicationStatus = async (req, res) => {
 	try {
-		const {job_id, user_id} = req.body;
+		const {job_id, user_id, new_status} = req.body;
 
 		await ApplicationModel.findOneAndUpdate(
 			{job_id},
 			{
 				$set: {
-					"applications.$[elem].status": "rejected",
+					"applications.$[elem].status": new_status,
 				},
 			},
 			{
 				arrayFilters: [{"elem.user_id": user_id}],
 			}
 		);
-
-		sendToQueue("JOB_REJECTION", {job_id, user_id});
-		return res.status(200).json({message: "application rejected"});
+        
+		sendToQueue("UPDATE_APPLICATION_STATUS", {
+			job_id,
+			user_id,
+			status: new_status,
+		}).then(() => {
+			return res.status(200).json({message: "application status updated"});
+		});
 	} catch (error) {
-		console.log(error);
 		return res.status(500).json({message: "something went wrong"});
 	}
 };

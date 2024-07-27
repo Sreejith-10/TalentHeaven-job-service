@@ -20,6 +20,12 @@ const jobSchema = new mongoose.Schema(
 		job_mode: {
 			type: String,
 		},
+		job_industry: {
+			type: String,
+		},
+		job_category: {
+			type: String,
+		},
 		job_description: {
 			type: String,
 		},
@@ -39,20 +45,12 @@ const jobSchema = new mongoose.Schema(
 			type: String,
 			default: "initial",
 		},
-		applications: [
-			{
-				user_id: {
-					type: String,
-				},
-				applied_on: {
-					type: Number,
-				},
-				status: {
-					type: String,
-					default: "applied",
-				},
-			},
-		],
+		duration: {
+			type: String,
+		},
+		applications_start_date: {
+			type: String,
+		},
 		applications_end_date: {
 			type: String,
 		},

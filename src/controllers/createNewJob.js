@@ -1,4 +1,5 @@
 import {sendToQueue} from "../config/amqp.js";
+import {ApplicationModel} from "../models/applicationModel.js";
 import {JobModel} from "../models/jobModel.js";
 
 export const createNewJob = async (req, res) => {
@@ -13,12 +14,15 @@ export const createNewJob = async (req, res) => {
 		vaccany,
 		job_type,
 		job_mode,
+		job_industry,
+		job_category,
 		job_description,
 		job_requirements,
 		experience,
 		salary,
 		skill_rquired,
-
+		duration,
+		applications_start_date,
 		applications_end_date,
 	} = jobData;
 
@@ -28,12 +32,22 @@ export const createNewJob = async (req, res) => {
 		vaccany,
 		job_type,
 		job_mode,
+		job_industry,
+		job_category,
 		job_description,
 		job_requirements,
 		skill_rquired,
 		experience,
 		salary,
+		duration,
+		applications_start_date,
 		applications_end_date,
+	});
+
+	await ApplicationModel.create({
+		company_id,
+		job_id: job._id,
+		applications: [],
 	});
 
 	// sendToQueue("JOB_POST", {job_id: job._id, createdOn: job.createdOn});
