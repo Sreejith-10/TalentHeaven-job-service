@@ -7,9 +7,18 @@ const applicationSchema = new mongoose.Schema({
 	job_id: {
 		type: String,
 	},
+	job_name: {
+		type: String,
+	},
 	applications: [
 		{
 			user_id: {
+				type: String,
+			},
+			user_name: {
+				type: String,
+			},
+			user_profile: {
 				type: String,
 			},
 			applied_on: {

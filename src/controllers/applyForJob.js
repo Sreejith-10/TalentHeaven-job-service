@@ -1,9 +1,9 @@
-import {sendToQueue} from "../config/amqp.js";
+import {listenToQueue, sendToQueue} from "../config/amqp.js";
 import {ApplicationModel} from "../models/applicationModel.js";
 
 export const applyForJob = async (req, res) => {
 	try {
-		const {company_id, job_id, user_id} = req.body;
+		const {company_id, job_id, user_id, user_name, user_profile} = req.body;
 
 		await ApplicationModel.updateOne(
 			{job_id},
@@ -11,6 +11,8 @@ export const applyForJob = async (req, res) => {
 				$push: {
 					applications: {
 						user_id,
+						user_name,
+						user_profile,
 					},
 				},
 			}
