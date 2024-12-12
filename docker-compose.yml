@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  job-service-db:
+    image: mongo:6
+    container_name: job-service-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - job-service-db-data:/data/db
+    networks:
+        - shared-network
+
+    job-service:
+      build:
+        context: .
+      container_name: job-service
+      ports:
+        - "3004:3004"
+      environment:
+        AMQP_URL: amqp://user:password@rabbitmq:5672
+        MONGO_URI:  mongodb://127.0.0.1:27017/talent_heaven
+      depends_on:
+        - job-service-db
+      networks:
+          - shared-network
+
+networks:
+  shared-network:
+    external: true
+
+volumes:
+    job-service-db-data:

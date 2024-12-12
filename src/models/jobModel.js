@@ -60,6 +60,9 @@ const jobSchema = new mongoose.Schema(
     applications_end_date: {
       type: String,
     },
+    applications: {
+      type: [String],
+    },
     createdOn: {
       type: Number,
       default: Date.now(),
