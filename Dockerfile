@@ -8,6 +8,6 @@ RUN npm install
 
 COPY job-service/src ./src
 
-EXPOSE 3000
+EXPOSE 3004
 
 CMD [ "node","src/service.js" ]
